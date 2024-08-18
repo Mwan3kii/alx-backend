@@ -40,17 +40,20 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        index_data = self.indexed_dataset()
-        assert index is not None and 0 <= index < len(index_data), "Index out of range"
+        """
+        Returns dictionary with pagination for deletion-resilient index.
+        """
+        indexedd = self.indexed_dataset()
+        assert index is not None and 0 <= index < len(indexedd), "Index out of range"
 
         data = []
         curr = index
-        while len(data) < page_size and curr < len(index_data):
-            if curr in index_data:
-                data.append(index_data[curr])
+        while len(data) < page_size and curr < len(indexedd):
+            if curr in indexedd:
+                data.append(indexedd[curr])
             curr += 1
 
-        next_index = curr if curr < len(index_data) else None
+        next_index = curr if curr < len(indexedd) else None
 
         return {
             "index": index,
