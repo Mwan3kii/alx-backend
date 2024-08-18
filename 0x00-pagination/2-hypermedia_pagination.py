@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Simple pagination"""
 import csv
-from typing import List, Tuple
+import math
+from typing import List, Tuple, Dict, Any
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
