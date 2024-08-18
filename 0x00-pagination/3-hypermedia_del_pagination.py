@@ -43,21 +43,17 @@ class Server:
         """
         Returns dictionary with pagination for deletion-resilient index.
         """
-        indexedd = self.indexed_dataset()
-        assert index is not None and 0 <= index < len(indexedd), "Index out of range"
-
-        data = []
-        curr = index
-        while len(data) < page_size and curr < len(indexedd):
-            if curr in indexedd:
-                data.append(indexedd[curr])
-            curr += 1
-
-        next_index = curr if curr < len(indexedd) else None
+        assert index in range(len(self.indexed_dataset()))
+        next_index = index + page_size
+        data = list()
+        for i in range(index, index + page_size):
+            if not self.indexed_dataset().get(i):
+                next_index += 1
+            data.append(self.indexed_dataset().get(i))
 
         return {
             "index": index,
             "data": data,
-            "page_size": len(data),
+            "page_size": page_size,
             "next_index": next_index
         }
