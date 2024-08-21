@@ -1,36 +1,32 @@
 #!/usr/bin/env python3
 """LRU cache"""
-from base_caching import BaseCaching
 from collections import OrderedDict
+from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    """inherits from BaseCaching a caching system using LRU algorithm"""
-
     def __init__(self):
-        """Initializes the cache.
-        """
         super().__init__()
-        self.cache_data = OrderedDict()
+        self.cache_data = OrderedDict()  # Use OrderedDict to maintain order of access
 
     def put(self, key, item):
-        """Adds an item in the cache.
-        """
         if key is None or item is None:
             return
-        if key not in self.cache_data:
-            if len(self.cache_data) + 1 > BaseCaching.MAX_ITEMS:
-                lru_key, _ = self.cache_data.popitem(True)
-                print("DISCARD:", lru_key)
-            self.cache_data[key] = item
-            self.cache_data.move_to_end(key, last=False)
-        else:
-            self.cache_data[key] = item
+
+        # Add or update the item in the cache
+        if key in self.cache_data:
+            self.cache_data.move_to_end(key)  # Move the key to the end to mark it as recently used
+        self.cache_data[key] = item
+
+        # Check if we need to discard the least recently used item
+        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            oldest_key, _ = self.cache_data.popitem(last=False)  # Remove the oldest item
+            print(f"DISCARD: {oldest_key}")
 
     def get(self, key):
-        """Retrieves an item by key.
-        """
-        if key is not None and key in self.cache_data:
-            self.cache_data.move_to_end(key, last=False)
-        return self.cache_data.get(key, None)
+        if key is None or key not in self.cache_data:
+            return None
 
+        # Move the accessed key to the end to mark it as recently used
+        self.cache_data.move_to_end(key)
+        return self.cache_data[key]
