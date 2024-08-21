@@ -5,33 +5,41 @@ from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    """Represents an object that allows storing and
-    retrieving items from a dictionary with a LRU
-    algorithm when the limit is reached.
+    """_summary_
     """
+
     def __init__(self):
-        """Initializes the cache.
+        """_summary_
         """
         super().__init__()
-        self.cache_data = OrderedDict()
+        self.usedKeys = []
 
     def put(self, key, item):
-        """Adds an item in the cache.
+        """_summary_
+
+        Args:
+                        key (_type_): _description_
+                        item (_type_): _description_
         """
-        if key is None or item is None:
-            return
-        if key not in self.cache_data:
-            if len(self.cache_data) + 1 > BaseCaching.MAX_ITEMS:
-                lru_key, _ = self.cache_data.popitem(True)
-                print("DISCARD:", lru_key)
+        if key is not None and item is not None:
             self.cache_data[key] = item
-            self.cache_data.move_to_end(key, last=False)
-        else:
-            self.cache_data[key] = item
+            if key not in self.usedKeys:
+                self.usedKeys.append(key)
+            else:
+                self.usedKeys.append(
+                    self.usedKeys.pop(self.usedKeys.index(key)))
+            if len(self.usedKeys) > BaseCaching.MAX_ITEMS:
+                discard = self.usedKeys.pop(0)
+                del self.cache_data[discard]
+                print('DISCARD: {:s}'.format(discard))
 
     def get(self, key):
-        """Retrieves an item by key.
+        """return the value in self.cache_data linked to key
+
+        Args:
+                        key (_type_): _description_
         """
-        if key is not None and key in self.cache_data:
-            self.cache_data.move_to_end(key, last=False)
-        return self.cache_data.get(key, None)
+        if key is not None and key in self.cache_data.keys():
+            self.usedKeys.append(self.usedKeys.pop(self.usedKeys.index(key)))
+            return self.cache_data.get(key)
+        return None
