@@ -4,7 +4,7 @@ from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
-    """BasicCache inherits from BaseCaching and is a caching system without any limit"""
+    """Inherits from BaseCaching and is caching system without limit"""
 
     def put(self, key, item):
         """Add an item in the cache"""

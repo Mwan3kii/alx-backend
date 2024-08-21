@@ -4,7 +4,7 @@ from base_caching import BaseCaching
 
 
 class FIFOCache(BaseCaching):
-    """FIFOCache inherits from BaseCaching and is a caching system using FIFO algorithm."""
+    """Inherits from BaseCaching a caching system using FIFO algorithm"""
 
     def __init__(self):
         """Initialize the class."""

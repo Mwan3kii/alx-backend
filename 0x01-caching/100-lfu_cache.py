@@ -5,7 +5,7 @@ from collections import defaultdict, OrderedDict
 
 
 class LFUCache(BaseCaching):
-    """LFUCache inherits from BaseCaching and is a caching system using LFU algorithm."""
+    """Inherits from BaseCaching caching system using LFU algorithm."""
 
     def __init__(self):
         """Initialize the class."""
@@ -23,8 +23,9 @@ class LFUCache(BaseCaching):
             else:
                 if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
                     min_freq = min(self.freq.values())
-                    lfu_keys = [k for k, v in self.freq.items() if v == min_freq]
-                    
+                    lfu_keys = [
+                        k for k, v in self.freq.items() if v == min_freq
+                    ]
                     if len(lfu_keys) == 1:
                         key_to_discard = lfu_keys[0]
                     else:
@@ -32,12 +33,10 @@ class LFUCache(BaseCaching):
                             if k in lfu_keys:
                                 key_to_discard = k
                                 break
-                    
                     del self.cache_data[key_to_discard]
                     del self.freq[key_to_discard]
                     del self.use_order[key_to_discard]
                     print(f"DISCARD: {key_to_discard}")
-                
                 self.cache_data[key] = item
                 self.freq[key] = 1
                 self.use_order[key] = None
