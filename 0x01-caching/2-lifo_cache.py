@@ -5,29 +5,23 @@ from base_caching import BaseCaching
 
 class LIFOCache(BaseCaching):
     """Inherits from BaseCaching a caching system using LIFO algorithm."""
+
     def __init__(self):
-        """Initializes the cache.
-        """
+        """Initialize the class."""
         super().__init__()
-        self.cache_data = OrderedDict()
+        self.last_key = None
 
     def put(self, key, item):
-        """Adds an item in the cache.
-        """
-        if key is None or item is None:
-            return
-        if key not in self.cache_data:
-            if len(self.cache_data) + 1 > BaseCaching.MAX_ITEMS:
-                lru_key, _ = self.cache_data.popitem(True)
-                print("DISCARD:", lru_key)
+        """Add item in the cache"""
+        if key is not None and item is not None:
+            cache_full = len(self.cache_data) >= BaseCaching.MAX_ITEMS
+            if cache_full and key not in self.cache_data:
+                if self.last_key is not None:
+                    del self.cache_data[self.last_key]
+                    print(f"DISCARD: {self.last_key}")
             self.cache_data[key] = item
-            self.cache_data.move_to_end(key, last=False)
-        else:
-            self.cache_data[key] = item
+            self.last_key = key
 
     def get(self, key):
-        """Retrieves an item by key.
-        """
-        if key is not None and key in self.cache_data:
-            self.cache_data.move_to_end(key, last=False)
+        """Get item by key from the cache"""
         return self.cache_data.get(key, None)
