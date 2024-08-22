@@ -5,11 +5,15 @@ from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
+    """Inherits from BaseCaching a caching system using MRU algorithm"""
+    
     def __init__(self):
+        """Initialize the class."""
         super().__init__()
         self.cache_data = OrderedDict()
 
     def put(self, key, item):
+        """Add item in the cache"""
         if key is None or item is None:
             return
 
@@ -21,6 +25,7 @@ class LRUCache(BaseCaching):
             print(f"DISCARD: {oldest_key}")
 
     def get(self, key):
+        """Get item by key from the cache"""
         if key is None or key not in self.cache_data:
             return None
         self.cache_data.move_to_end(key)
