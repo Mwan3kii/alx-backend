@@ -19,7 +19,7 @@ babel = Babel(app)
 @app.route('/')
 def index():
     """Funtion that renders the html template"""
-    return render_template('2-index.html')
+    return render_template('3-index.html')
 
 
 @babel.localeselector
