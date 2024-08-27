@@ -58,7 +58,7 @@ def before_request():
 
 
 @babel.timezoneselector
-def get_timezone():
+def get_timezone() -> str:
     """Find timezone in url parameter from user settings"""
     timezone = request.args.get('timezone')
     if timezone:
