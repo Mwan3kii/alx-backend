@@ -21,6 +21,7 @@ def index():
     """Funtion that renders the html template"""
     return render_template('2-index.html')
 
+
 @babel.localeselector
 def get_locale():
     """Get locale from request with the decorator"""
