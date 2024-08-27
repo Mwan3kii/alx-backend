@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, g
 from flask_babel import Babel
 import pytz
 from pytz import UnknownTimeZoneError
+from datetime import datetime
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -28,7 +29,11 @@ babel = Babel(app)
 @app.route('/')
 def index():
     """Funtion that renders the html template"""
-    return render_template('7-index.html')
+    timezone = get_timezone()
+    tz = pytz.timezone(timezone)
+    current_time = datetime.now(tz)
+    formatted = current_time.strftime("%b %d, %Y, %I:%M:%S %p")
+    return render_template('index.html', current_time=formatted)
 
 
 @babel.localeselector
