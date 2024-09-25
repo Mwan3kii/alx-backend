@@ -35,10 +35,10 @@ app.get('/process', async (req, res) => {
   res.json({ status: 'Queue processing' });
   queue.process('reserve_seat', async (job, done) => {
     const availableSeats = await getCurrentAvailableSeatsAsync('available_seats');
-    const currentSeats = parseInt(availableSeats, 10);
-    if (currentSeats > 0) {
-      await reserveSeatAsync('available_seats', currentSeats - 1);
-      if (currentSeats - 1 === 0) {
+    const currSeats = parseInt(availableSeats, 10);
+    if (currSeats > 0) {
+      await reserveSeatAsync('available_seats', currSeats - 1);
+      if (currSeats - 1 === 0) {
         reservationEnabled = false;
       }
       done();
